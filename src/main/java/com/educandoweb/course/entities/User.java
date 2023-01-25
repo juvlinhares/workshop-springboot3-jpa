@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity //pra dizer ao d que é uma entidade
+@Entity //pra dizer ao d que é uma entidade do bd 
 @Table(name = "tb_user") // dar o nome da tabela
 public class User implements Serializable {
 	
