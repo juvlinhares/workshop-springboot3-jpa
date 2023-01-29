@@ -16,22 +16,20 @@ import com.educandoweb.course.services.UserService;
 @RequestMapping(value = "/users")
 public class UserResource {
 
-	//dependencia para o service
 	@Autowired
-	private UserService service;
-	
+	UserService service;
+
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		
-		List<User> user = service.findAll();
-		return ResponseEntity.ok().body(user);
+	public ResponseEntity<List<User>> findAll() {
+		List<User> list = service.findAll();
+		return ResponseEntity.ok().body(list);
 	}
-	
-	@GetMapping(value="/{id}")
+
+	@GetMapping("/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id) {
 		User user = service.findById(id);
-		
 		return ResponseEntity.ok().body(user);
+
 	}
 
 }
