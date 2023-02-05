@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import jakarta.persistence.Entity;
@@ -43,7 +42,7 @@ public class Order implements Serializable {
 
 	}
 
-	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
+	public Order(Long id, Instant moment,OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
 		setOrderStatus(orderStatus);
@@ -66,6 +65,8 @@ public class Order implements Serializable {
 		this.moment = moment;
 	}
 	
+	
+
 	public OrderStatus getOrderStatus() {
 		return OrderStatus.valueOf(orderStatus);
 	}
