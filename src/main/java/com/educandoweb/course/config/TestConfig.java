@@ -1,6 +1,6 @@
 package com.educandoweb.course.config;
 
-import java.time.Instant;
+import java.time.Instant;import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +50,14 @@ public class TestConfig implements CommandLineRunner {
 		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		
+		//associar e salvar produtos e categorias:
+		p1.getCategories().add(cat2);
+		p2.getCategories().addAll(Arrays.asList(cat1, cat3));
+		p3.getCategories().add(cat3);
+		p4.getCategories().add(cat3);
+		p5.getCategories().add(cat2);
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 		
 		// popular tabela user
