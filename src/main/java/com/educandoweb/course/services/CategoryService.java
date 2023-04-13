@@ -11,16 +11,17 @@ import com.educandoweb.course.repositories.CategoryRepository;
 
 @Service
 public class CategoryService {
-
+	
 	@Autowired
-	CategoryRepository repository;
-
-	public List<Category> findAll() {
+	private CategoryRepository repository;
+	
+	public List<Category> findAll(){
 		return repository.findAll();
 	}
-
+	
 	public Category findById(Long id) {
-		Optional<Category> obj = repository.findById(id);
-		return obj.get();
+		Optional<Category> category = repository.findById(id);
+		return category.get();
 	}
+
 }

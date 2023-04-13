@@ -1,4 +1,4 @@
-package com.educandoweb.course.resources;
+package com.educandoweb.course.resourcers;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import com.educandoweb.course.entities.Product;
 import com.educandoweb.course.services.ProductService;
 
 @RestController
-@RequestMapping(value="/products")
+@RequestMapping(value = "products")
 public class ProductResource {
 	
 	@Autowired
@@ -21,13 +21,14 @@ public class ProductResource {
 	
 	@GetMapping
 	public ResponseEntity<List<Product>> findAll(){
-		List <Product> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<Product> categories = service.findAll();
+		return ResponseEntity.ok().body(categories);
 	}
-	@GetMapping(value="/{id}")
+	
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> findById(@PathVariable Long id){
-		Product obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		Product category = service.findById(id);
+		return ResponseEntity.ok().body(category);
 	}
 
 }

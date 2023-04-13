@@ -16,6 +16,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -31,11 +32,11 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 
-	// associação com category
-	@ManyToMany
-	@JoinTable(name = "tb_product_category",
-	joinColumns = @JoinColumn(name ="product_id"),
-	inverseJoinColumns = @JoinColumn(name = "category_id"))
+	// mapeamento que transforma as coleções em tabelas de associação no BD:
+	@ManyToMany // associação muitos p muitos
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) // nome
+	// categorias:
+	// uso o Set<> para barantir que não vai haver repetição de categorias
 	private Set<Category> categories = new HashSet<>();
 	
 	@OneToMany(mappedBy = "id.product")
@@ -53,6 +54,7 @@ public class Product implements Serializable {
 		this.price = price;
 		this.imgUrl = imgUrl;
 	}
+
 	public Long getId() {
 		return id;
 	}
@@ -99,17 +101,13 @@ public class Product implements Serializable {
 	
 	@JsonIgnore
 	public Set<Order> getOrders(){
-		Set<Order> set = new HashSet<>();
-		for(OrderItem x :items) {
-			set.add(x.getOrder());
+		Set<Order> orders = new HashSet<>();
+		for (OrderItem order : items) {
+			orders.add(order.getOrder());			
 		}
-		return set;
+		return orders;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

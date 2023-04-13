@@ -11,21 +11,16 @@ import com.educandoweb.course.repositories.OrderRepository;
 
 @Service
 public class OrderService {
-
-	// dependencia de Order repository:
+	
 	@Autowired
 	private OrderRepository repository;
-
 	
 	public List<Order> findAll(){
-		
 		return repository.findAll();
 	}
 	
-	
-	public Order findById (Long id) {
+	public Order findById(Long id) {
 		Optional<Order> order = repository.findById(id);
-		
 		return order.get();
 	}
 }
