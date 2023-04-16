@@ -27,8 +27,29 @@ public class UserService {
 	public User insert(User obj) {
 		return repository.save(obj);
 	}
-	
+
 	public void delete(Long id) {
-		 repository.deleteById(id);
+		repository.deleteById(id);
 	}
+	
+	public User update(Long id, User obj) {
+		//gerar a entidadede referencia:
+		User entity = repository.getReferenceById(id);
+		
+		//chamar o método update da entidade(entity)
+		updateData(entity, obj);
+		
+		//retornar/salvar a entidade atualizada no BD
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		//setar as informações novas (obj) no user antigo(entity):
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		
+		
+	}
+
 }
