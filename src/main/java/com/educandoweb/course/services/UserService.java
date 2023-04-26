@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.ResouceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 
 	public User findById(Long id) {
 		Optional<User> user = repository.findById(id);
-		return user.get();
+		return user.orElseThrow(()->  new ResouceNotFoundException(id));
 	}
 
 	public User insert(User obj) {
@@ -31,25 +32,21 @@ public class UserService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
-	
+
 	public User update(Long id, User obj) {
-		//gerar a entidadede referencia:
+		// cria o entity recebendo o get.reference do repositório
 		User entity = repository.getReferenceById(id);
-		
-		//chamar o método update da entidade(entity)
+
+		// chama o método que seta as informações:
 		updateData(entity, obj);
-		
-		//retornar/salvar a entidade atualizada no BD
+
+		// salva o novo entity no bd:
 		return repository.save(entity);
 	}
 
-	private void updateData(User entity, User obj) {
-		//setar as informações novas (obj) no user antigo(entity):
+	public void updateData(User entity, User obj) {
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getEmail());
 		entity.setPhone(obj.getPhone());
-		
-		
 	}
-
 }

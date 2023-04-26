@@ -44,31 +44,29 @@ public class UserResource {
 	
 	@PostMapping
 	public ResponseEntity<User> insert(@RequestBody User obj){
-		//adiciona o usuário no banco de dados
+		//add no user no bd:
 		obj = service.insert(obj);
-		
-		//gera a URI de criação:
+		//URI de inserção
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		
-		//retorno da resposta http 201(criado)
+		//resposta http created(201)
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
-		//exlui o osuário do banco de dados:
+		//deleta do bd:
 		service.delete(id);
 		
-		//retorna a resposta http 204(no content)
-		return ResponseEntity.noContent().build();	
+		//resposta http no content(204)
+		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value="/{id}")
 	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
-		//chamar o metodo update do service:
-		obj = service.update(id, obj);
+		//chama o método update do service
+		service.update(id, obj);
 		
-		//retornar a resposta http 200(ok):
-		return ResponseEntity.ok().body(obj);
+		//gera a resposta http ok(200)
+		return ResponseEntity.ok().build(); 
 	}
 }
