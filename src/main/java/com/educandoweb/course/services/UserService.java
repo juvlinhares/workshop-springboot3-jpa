@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
-import com.educandoweb.course.services.exceptions.DataBaseException;
+import com.educandoweb.course.services.exceptions.DatabaseException;
 import com.educandoweb.course.services.exceptions.ResourceNotFoundExceptions;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -35,30 +37,33 @@ public class UserService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-			
-		}catch(EmptyResultDataAccessException e){
-			//lanço minha exceção personalizada:
+			// id não encontrado
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundExceptions(id);
-		}catch(DataIntegrityViolationException e) {
-			//lanço a minha exceção databa exception:
-			throw new DataBaseException(e.getMessage());
+			// id com produto vinculado a ele:
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
 		}
 	}
 
 	public User update(Long id, User obj) {
-		// cria o entity recebendo o get.reference do repositório
-		User entity = repository.getReferenceById(id);
-
-		// chama o método que seta as informações:
-		updateData(entity, obj);
-
-		// salva o novo entity no bd:
-		return repository.save(entity);
+		try {
+			// cria o entity recebendo o get.reference do repositório
+			User entity = repository.getReferenceById(id);
+			// chama o método que seta as informações:
+			updateData(entity, obj);
+			// salva o novo entity no bd:
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundExceptions(id);
+		}
 	}
 
-	public void updateData(User entity, User obj) {
+	private void updateData(User entity, User obj) {
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getEmail());
 		entity.setPhone(obj.getPhone());
+
 	}
+
 }
